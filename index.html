@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>для настроения</title>
+    <title>Для тебя</title>
     <style>
         * {
             box-sizing: border-box;
@@ -84,7 +84,7 @@
             "какая", "ты", "ОСОБЕННАЯ."
         ];
 
-        // Второй список слов без запятых (автоматически пролетают поверх видео)
+        // Второй список слов (автоматически пролетают поверх видео)
         const compliments = [
             "а особенная потому что",
             "искренняя", "добрая", "нежная", "заботливая", "ласковая", "красивая", 
@@ -149,25 +149,20 @@
             }
         });
 
-        // Функция авто-смены слов поверх видео
+        // Функция авто-смены всех слов каждые 500 мс поверх видео
         function startCompliments() {
             let compIndex = 0;
-            textElement.textContent = compliments[compIndex]; // Фраза: "а особенная потому что"
+            textElement.textContent = compliments[compIndex]; // Сразу выводим первое слово
 
-            // Первое слово висит 1 секунду (1000 мс)
-            setTimeout(() => {
+            // Все слова (начиная со второго) сменяются ровно каждые 500 мс
+            const compInterval = setInterval(() => {
                 compIndex++;
-                
-                // Все последующие слова сменяются каждые 80 миллисекунд
-                const compInterval = setInterval(() => {
-                    if (compIndex < compliments.length) {
-                        textElement.textContent = compliments[compIndex];
-                        compIndex++;
-                    } else {
-                        clearInterval(compInterval); // Завершаем смену слов
-                    }
-                }, 500;
-            }, 1000);
+                if (compIndex < compliments.length) {
+                    textElement.textContent = compliments[compIndex];
+                } else {
+                    clearInterval(compInterval); // Завершаем смену слов в конце списка
+                }
+            }, 500);
         }
     </script>
 </body>
