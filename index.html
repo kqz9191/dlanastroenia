@@ -13,7 +13,7 @@
             -webkit-user-select: none;
             -moz-user-select: none;
             -ms-user-select: none;
-            -webkit-tap-highlight-color: transparent; /* Убирает синий фон/подсветку при клике на смартфонах */
+            -webkit-tap-highlight-color: transparent; /* Убирает синий фон/подсветку при клике */
             outline: none;
         }
 
@@ -177,12 +177,12 @@
             }
         });
 
-        // Функция авто-смены слов (100 мс) и плавной концовки
+        // Функция авто-смены слов (200 мс) и плавной концовки
         function startCompliments() {
             let compIndex = 0;
             textElement.textContent = compliments[compIndex];
 
-            // Каждое слово сменяется каждые 100 мс
+            // Каждое слово сменяется каждые 200 мс
             const compInterval = setInterval(() => {
                 compIndex++;
                 if (compIndex < compliments.length) {
@@ -207,7 +207,7 @@
 
                     }, 500);
                 }
-            }, 100);
+            }, 200);
         }
     </script>
 </body>
