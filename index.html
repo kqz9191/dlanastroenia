@@ -177,12 +177,12 @@
             }
         });
 
-        // Функция авто-смены слов (200 мс) и плавной концовки
+        // Функция авто-смены слов (150 мс) и плавной концовки
         function startCompliments() {
             let compIndex = 0;
             textElement.textContent = compliments[compIndex];
 
-            // Каждое слово сменяется каждые 200 мс
+            // Каждое слово сменяется каждые 150 мс
             const compInterval = setInterval(() => {
                 compIndex++;
                 if (compIndex < compliments.length) {
@@ -207,7 +207,7 @@
 
                     }, 500);
                 }
-            }, 200);
+            }, 150);
         }
     </script>
 </body>
