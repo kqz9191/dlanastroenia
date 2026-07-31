@@ -104,8 +104,8 @@
     </video>
 
     <script>
-        // 8 кадров в секунду = 125 миллисекунд на слово
-        const complimentsSpeed = 125;
+        // Установлено 280 миллисекунд на каждое слово
+        const complimentsSpeed = 280;
 
         // Первоначальный список слов (переключаются по клику)
         const words = [
@@ -180,12 +180,12 @@
             }
         });
 
-        // Функция авто-смены слов (125 мс / 8 FPS)
+        // Функция авто-смены слов (280 мс)
         function startCompliments() {
             let compIndex = 0;
             textElement.textContent = compliments[compIndex];
 
-            // Каждое слово сменяется каждые 125 миллисекунд
+            // Каждое слово сменяется каждые 280 миллисекунд
             const compInterval = setInterval(() => {
                 compIndex++;
                 if (compIndex < compliments.length) {
@@ -203,7 +203,7 @@
                             videoElement.style.display = 'none'; // Полностью отключаем видео
                             videoElement.pause();
 
-                            textElement.textContent = "ты котенок в этом мире";
+                            textElement.textContent = "ты не такая, как думаешь. ты самая лучшая";
                             textElement.classList.remove('fade-out');
                             textElement.classList.add('final-text');
                         }, 1000);
