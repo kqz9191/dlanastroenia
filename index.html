@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Для тебя</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            user-select: none; /* Запрет выделения текста */
+            -webkit-user-select: none;
+        }
+
+        body, html {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Arial Black', sans-serif;
+            cursor: pointer;
+            background-color: #000;
+        }
+
+        /* Класс для смены фона */
+        body.white-bg {
+            background-color: #fff;
+        }
+
+        /* Текст с адаптивным размером */
+        #text {
+            font-size: clamp(2rem, 8vw, 3rem);
+            text-align: center;
+            color: #fff;
+            mix-blend-mode: difference;
+            padding: 15px;
+            transition: none;
+            z-index: 2;
+            max-width: 95vw;
+        }
+
+        /* Белый жирный стиль для особенных слов поверх видео */
+        .special {
+            font-weight: 900 !important;
+            font-size: clamp(1.5rem, 6.5vw, 2.5rem) !important;
+            text-transform: uppercase;
+            color: #ffffff !important;
+            mix-blend-mode: normal !important; /* Яркий белый цвет */
+            text-shadow: 0 0 20px rgba(0, 0, 0, 0.9), 0 0 10px rgba(0, 0, 0, 0.9); /* Тень для читаемости */
+        }
+
+        /* Видео на весь экран */
+        video {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            object-fit: cover;
+            pointer-events: none; /* Отключает клики по видео */
+            display: none;
+            z-index: 1;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="text">если</div>
+
+    <video id="myVideo" loop muted playsinline>
+        <source src="1.mp4" type="video/mp4">
+        Ваш браузер не поддерживает видео.
+    </video>
+
+    <script>
+        // Первоначальный список слов (переключаются по клику)
+        const words = [
+            "если", "бы", "я", "мог", "подарить", "тебе", "одну", "вещь",
+            "я", "бы", "подарил", "тебе", "возможность", "увидеть", "себя",
+            "моими", "глазами", "чтобы", "ты", "наконец", "поняла.",
+            "какая", "ты", "ОСОБЕННАЯ."
+        ];
+
+        // Второй список слов без запятых (автоматически пролетают поверх видео)
+        const compliments = [
+            "а особенная потому что",
+            "искренняя", "добрая", "нежная", "заботливая", "ласковая", "красивая", 
+            "умная", "милая", "очаровательная", "прекрасная", "улыбчивая", 
+            "солнечная", "светлая", "лучезарная", "добрая", "честная", "верная", 
+            "надежная", "понимающая", "отзывчивая", "чуткая", "терпеливая", 
+            "спокойная", "веселая", "жизнерадостная", "позитивная", "вдохновляющая", 
+            "уникальная", "неповторимая", "настоящая", "искристая", "душевная", 
+            "романтичная", "трогательная", "открытая", "искренняя", "харизматичная", 
+            "обаятельная", "привлекательная", "великолепная", "чудесная", "волшебная", 
+            "удивительная", "невероятная", "бесценная", "драгоценная", "любимая", 
+            "родная", "единственная", "талантливая", "сильная", "смелая", 
+            "уверенная", "мудрая", "аккуратная", "внимательная", "заботливая", 
+            "искренняя", "добрая", "мягкая", "нежнейшая", "уютная", "теплая", 
+            "спокойная", "искрометная", "позитивная", "отзывчивая", "благородная", 
+            "сердечная", "великодушная", "искренняя", "терпимая", "воспитанная", 
+            "культурная", "естественная", "искренняя", "стильная", "элегантная", 
+            "грациозная", "изящная", "обаятельная", "яркая", "сияющая", 
+            "мечтательная", "вдохновенная", "волнующая", "притягательная", 
+            "сказочная", "чудесная", "идеальная", "незабываемая", "великолепная", 
+            "исключительная", "ценная", "любимая", "незаменимая", "дорогая", 
+            "восхитительная", "прекраснейшая", "необыкновенная"
+        ];
+
+        let currentIndex = 0;
+        let isAutomaticPhase = false;
+        const textElement = document.getElementById('text');
+        const videoElement = document.getElementById('myVideo');
+
+        // Мигание фона каждые 70 миллисекунд
+        const flashInterval = setInterval(() => {
+            document.body.classList.toggle('white-bg');
+        }, 70);
+
+        // Переключение слов по клику
+        window.addEventListener('click', () => {
+            if (isAutomaticPhase) return; // Отключаем клики после входа в авто-фазу
+
+            if (currentIndex < words.length - 1) {
+                currentIndex++;
+                textElement.textContent = words[currentIndex];
+
+                // Когда доходим до слова "ОСОБЕННАЯ."
+                if (words[currentIndex] === "ОСОБЕННАЯ.") {
+                    isAutomaticPhase = true;
+
+                    // 1. Применяем стиль для текста
+                    textElement.classList.add('special');
+
+                    // 2. Останавливаем мигание и делаем фон темным
+                    clearInterval(flashInterval);
+                    document.body.classList.remove('white-bg');
+                    document.body.style.backgroundColor = '#000';
+
+                    // 3. Через 2 секунды запускаем видео и комплименты
+                    setTimeout(() => {
+                        videoElement.style.display = 'block';
+                        videoElement.play();
+                        startCompliments();
+                    }, 2000);
+                }
+            }
+        });
+
+        // Функция авто-смены слов поверх видео
+        function startCompliments() {
+            let compIndex = 0;
+            textElement.textContent = compliments[compIndex]; // Фраза: "а особенная потому что"
+
+            // Первое слово висит 1 секунду (1000 мс)
+            setTimeout(() => {
+                compIndex++;
+                
+                // Все последующие слова сменяются каждые 80 миллисекунд
+                const compInterval = setInterval(() => {
+                    if (compIndex < compliments.length) {
+                        textElement.textContent = compliments[compIndex];
+                        compIndex++;
+                    } else {
+                        clearInterval(compInterval); // Завершаем смену слов
+                    }
+                }, 80);
+            }, 1000);
+        }
+    </script>
+</body>
+</html>
