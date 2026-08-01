@@ -98,6 +98,11 @@
 
     <div id="text">если</div>
 
+    <!-- Аудио плеер (2.mp3) -->
+    <audio id="bgMusic" loop autoplay>
+        <source src="2.mp3" type="audio/mpeg">
+    </audio>
+
     <!-- Первое видео -->
     <video id="myVideo" loop muted playsinline>
         <source src="1.mp4" type="video/mp4">
@@ -113,6 +118,22 @@
     <script>
         // Установлено 186 миллисекунд на каждое слово
         const complimentsSpeed = 186;
+
+        // Элементы
+        const textElement = document.getElementById('text');
+        const videoElement = document.getElementById('myVideo');
+        const videoElement2 = document.getElementById('myVideo2');
+        const bgMusic = document.getElementById('bgMusic');
+
+        // Запуск музыки при первой возможности
+        function tryPlayAudio() {
+            if (bgMusic.paused) {
+                bgMusic.play().catch(() => {
+                    // Блокировка автозапуска браузером — музыка включится при клике
+                });
+            }
+        }
+        tryPlayAudio(); // Пробуем включить сразу при загрузке
 
         // Первоначальный список слов (переключаются по клику)
         const words = [
@@ -149,9 +170,6 @@
 
         let currentIndex = 0;
         let isAutomaticPhase = false;
-        const textElement = document.getElementById('text');
-        const videoElement = document.getElementById('myVideo');
-        const videoElement2 = document.getElementById('myVideo2');
 
         // Мигание фона каждые 70 миллисекунд
         const flashInterval = setInterval(() => {
@@ -160,6 +178,8 @@
 
         // Переключение слов по клику
         window.addEventListener('click', () => {
+            tryPlayAudio(); // Страховка: если автозапуск был заблокирован, включаем музыку при клике
+
             if (isAutomaticPhase) return; // Отключаем клики после входа в авто-фазу
 
             if (currentIndex < words.length - 1) {
