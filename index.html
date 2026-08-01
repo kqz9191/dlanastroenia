@@ -116,7 +116,7 @@
     </video>
 
     <script>
-        // Установлено 186 миллисекунд на каждое слово
+        // Установлено 186 миллисекунд на каждое слово (со второго слова)
         const complimentsSpeed = 186;
 
         // Элементы
@@ -178,7 +178,7 @@
 
         // Переключение слов по клику
         window.addEventListener('click', () => {
-            tryPlayAudio(); // Страховка: если автозапуск был заблокирован, включаем музыку при клике
+            tryPlayAudio(); // Страховка включения музыки при первом клике
 
             if (isAutomaticPhase) return; // Отключаем клики после входа в авто-фазу
 
@@ -208,44 +208,49 @@
             }
         });
 
-        // Функция авто-смены слов (186 мс)
+        // Функция авто-смены слов
         function startCompliments() {
             let compIndex = 0;
-            textElement.textContent = compliments[compIndex];
+            textElement.textContent = compliments[compIndex]; // Первое слово: "а особенная потому что"
 
-            // Каждое слово сменяется каждые 186 миллисекунд
-            const compInterval = setInterval(() => {
+            // Держим первое слово ровно 1000 мс (1 секунду)
+            setTimeout(() => {
                 compIndex++;
-                if (compIndex < compliments.length) {
-                    textElement.textContent = compliments[compIndex];
-                } else {
-                    clearInterval(compInterval); // Завершаем смену слов
 
-                    // Задержка на последнем слове, затем испарение текста И первого видео
-                    setTimeout(() => {
-                        textElement.classList.add('fade-out'); // Текст испаряется
-                        videoElement.style.opacity = '0';      // Видео 1 плавно уходит в темноту
+                // Начиная со второго слова, сменяем их каждые 186 мс
+                const compInterval = setInterval(() => {
+                    if (compIndex < compliments.length) {
+                        textElement.textContent = compliments[compIndex];
+                        compIndex++;
+                    } else {
+                        clearInterval(compInterval); // Завершаем смену слов
 
-                        // Через 1 секунду переключаемся на второе видео 2.mp4
+                        // Задержка на последнем слове, затем испарение текста И первого видео
                         setTimeout(() => {
-                            // Отключаем видео 1
-                            videoElement.style.display = 'none';
-                            videoElement.pause();
+                            textElement.classList.add('fade-out'); // Текст испаряется
+                            videoElement.style.opacity = '0';      // Видео 1 плавно уходит в темноту
 
-                            // Запускаем видео 2 (2.mp4)
-                            videoElement2.style.display = 'block';
-                            videoElement2.style.opacity = '1';
-                            videoElement2.play();
+                            // Через 1 секунду переключаемся на второе видео 2.mp4
+                            setTimeout(() => {
+                                // Отключаем видео 1
+                                videoElement.style.display = 'none';
+                                videoElement.pause();
 
-                            // Показываем финальную надпись
-                            textElement.textContent = "ты котенок в этом мире 🫶";
-                            textElement.classList.remove('fade-out');
-                            textElement.classList.add('final-text');
-                        }, 1000);
+                                // Запускаем видео 2 (2.mp4)
+                                videoElement2.style.display = 'block';
+                                videoElement2.style.opacity = '1';
+                                videoElement2.play();
 
-                    }, 500);
-                }
-            }, complimentsSpeed);
+                                // Показываем финальную надпись
+                                textElement.textContent = "ты котенок в этом мире 🫶";
+                                textElement.classList.remove('fade-out');
+                                textElement.classList.add('final-text');
+                            }, 1000);
+
+                        }, 500);
+                    }
+                }, complimentsSpeed);
+            }, 1000); // <- Длительность показа первого слова
         }
     </script>
 </body>
