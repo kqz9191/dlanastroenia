@@ -66,19 +66,19 @@
             transform: scale(1.3) !important;
         }
 
-        /* Стиль и плавное появление финальной надписи на черном фоне */
+        /* Стиль и плавное появление финальной надписи поверх второго видео */
         .final-text {
             font-weight: 900 !important;
             font-size: clamp(1.6rem, 7vw, 2.8rem) !important;
             color: #ffffff !important;
             mix-blend-mode: normal !important;
-            text-shadow: 0 0 25px rgba(255, 255, 255, 0.6);
+            text-shadow: 0 0 25px rgba(255, 255, 255, 0.8), 0 0 15px rgba(0, 0, 0, 0.9);
             opacity: 1 !important;
             filter: blur(0) !important;
             transform: scale(1) !important;
         }
 
-        /* Видео на весь экран с возможностью плавного исчезновения */
+        /* Видео элементы на весь экран */
         video {
             position: fixed;
             top: 0;
@@ -98,8 +98,15 @@
 
     <div id="text">если</div>
 
+    <!-- Первое видео -->
     <video id="myVideo" loop muted playsinline>
         <source src="1.mp4" type="video/mp4">
+        Ваш браузер не поддерживает видео.
+    </video>
+
+    <!-- Второе видео (для финального слова) -->
+    <video id="myVideo2" loop muted playsinline>
+        <source src="2.mp4" type="video/mp4">
         Ваш браузер не поддерживает видео.
     </video>
 
@@ -115,7 +122,7 @@
             "какая", "ты", "ОСОБЕННАЯ."
         ];
 
-        // Второй список слов (автоматически пролетают поверх видео)
+        // Второй список слов (автоматически пролетают поверх первого видео)
         const compliments = [
             "а особенная потому что",
             "искренняя", "добрая", "нежная", "заботливая", "ласковая", "красивая", 
@@ -144,6 +151,7 @@
         let isAutomaticPhase = false;
         const textElement = document.getElementById('text');
         const videoElement = document.getElementById('myVideo');
+        const videoElement2 = document.getElementById('myVideo2');
 
         // Мигание фона каждые 70 миллисекунд
         const flashInterval = setInterval(() => {
@@ -170,7 +178,7 @@
                     document.body.classList.remove('white-bg');
                     document.body.style.backgroundColor = '#000';
 
-                    // 3. Через 2 секунды запускаем видео и комплименты
+                    // 3. Через 2 секунды запускаем видео 1.mp4 и комплименты
                     setTimeout(() => {
                         videoElement.style.display = 'block';
                         videoElement.play();
@@ -193,16 +201,23 @@
                 } else {
                     clearInterval(compInterval); // Завершаем смену слов
 
-                    // Задержка на последнем слове, затем испарение текста И видео
+                    // Задержка на последнем слове, затем испарение текста И первого видео
                     setTimeout(() => {
                         textElement.classList.add('fade-out'); // Текст испаряется
-                        videoElement.style.opacity = '0';      // Видео плавно затухает в черный экран
+                        videoElement.style.opacity = '0';      // Видео 1 плавно уходит в темноту
 
-                        // Через 1 секунду после ухода в темноту выводим финальный текст
+                        // Через 1 секунду переключаемся на второе видео 2.mp4
                         setTimeout(() => {
-                            videoElement.style.display = 'none'; // Полностью отключаем видео
+                            // Отключаем видео 1
+                            videoElement.style.display = 'none';
                             videoElement.pause();
 
+                            // Запускаем видео 2 (2.mp4)
+                            videoElement2.style.display = 'block';
+                            videoElement2.style.opacity = '1';
+                            videoElement2.play();
+
+                            // Показываем финальную надпись
                             textElement.textContent = "ты котенок в этом мире 🫶";
                             textElement.classList.remove('fade-out');
                             textElement.classList.add('final-text');
