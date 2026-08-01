@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Для тебя</title>
+    <title>тебее)</title>
     <style>
         * {
             box-sizing: border-box;
@@ -104,8 +104,8 @@
     </video>
 
     <script>
-        // Установлено 195 миллисекунд на каждое слово
-        const complimentsSpeed = 195;
+        // Установлено 186 миллисекунд на каждое слово
+        const complimentsSpeed = 186;
 
         // Первоначальный список слов (переключаются по клику)
         const words = [
@@ -180,12 +180,12 @@
             }
         });
 
-        // Функция авто-смены слов (195 мс)
+        // Функция авто-смены слов (186 мс)
         function startCompliments() {
             let compIndex = 0;
             textElement.textContent = compliments[compIndex];
 
-            // Каждое слово сменяется каждые 195 миллисекунд
+            // Каждое слово сменяется каждые 186 миллисекунд
             const compInterval = setInterval(() => {
                 compIndex++;
                 if (compIndex < compliments.length) {
@@ -203,7 +203,7 @@
                             videoElement.style.display = 'none'; // Полностью отключаем видео
                             videoElement.pause();
 
-                            textElement.textContent = "ты не такая, как думаешь. ты самая лучшая";
+                            textElement.textContent = "ты котенок в этом мире 🫶";
                             textElement.classList.remove('fade-out');
                             textElement.classList.add('final-text');
                         }, 1000);
